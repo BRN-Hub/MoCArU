@@ -1,7 +1,0 @@
-<library path="lib/libaruco_pose_estimation_plugins">
-
-    <class name="aruco_pose_estimation/RelativePoseEstimator" type="aruco_pose_estimation::RelativePoseEstimator" base_class_type="nodelet::Nodelet">
-        <description>estimates camera's relative pose based on ArUco detection results</description>
-    </class>
-
-</library>
