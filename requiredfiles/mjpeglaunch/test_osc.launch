@@ -1,0 +1,26 @@
+<launch>
+      <!-- -->
+      <!-- mjpeg stream to ros image topic -->
+      <node name="mjpeg_client" pkg="nodelet" type="nodelet" args="manager" output="screen" />
+      <!-- mjpeg stream to compressed image -->
+      <node name="mjepg_client_loader" pkg="nodelet" type="nodelet" 
+            args="load mjpeg_client/MjpegClient mjpeg_client" output="screen">
+            <rosparam>
+                server: 192.168.1.1
+                service: 80
+                target: /osc/commands/execute
+                headers: 
+                    Content-Type: application/json
+                body: "{\"name\":\"camera.getLivePreview\"}"
+                timeout: 5.
+                frame_id: osc_camera
+            </rosparam>
+      </node>
+      <!-- compressed image to uncompressed image -->
+      <node name="mjpeg_decoder_loader" pkg="nodelet" type="nodelet"
+            args="load mjpeg_client/MjpegDecoder mjpeg_client" output="screen" />
+      <!-- -->
+      <!-- viewer -->
+      <node name="image_viewer" pkg="rqt_image_view" type="rqt_image_view" 
+            args="/image" output="screen" />
+</launch>

@@ -1,0 +1,13 @@
+<launch>
+   <arg name="num_cameras" default="10"/>
+   <node pkg="dist_from_tf" name="publish_relpos_kalman_1" type="publish_relpos_kalman.py" output="screen" args="1">
+   <param name="camera" value="$(arg num_cameras)"/>
+   <param name="robot_num" value="1"/>
+   </node>
+
+   <node pkg="dist_from_tf" name="publish_relpos_kalman_2" type="publish_relpos_kalman.py" output="screen" args="2">
+   <param name="camera" value="$(arg num_cameras)"/>
+   <param name="robot_num" value="2"/>
+   </node>
+
+</launch>

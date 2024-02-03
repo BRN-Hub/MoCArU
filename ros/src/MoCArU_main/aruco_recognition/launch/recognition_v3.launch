@@ -1,0 +1,50 @@
+<launch>
+
+    <!--                                                        -->
+    <!-- Image source topics below must be published externally -->
+    <!--   * 'image_raw' (sensor_msgs/Image)                    -->
+    <!--                                                        -->
+
+    <!--                 -->
+    <!-- ArUco detection -->
+    <!--                 -->
+    <arg name="image_topic" default="image_raw"/>
+    <node name="aruco_recognizer" pkg="nodelet" type="nodelet"
+          args="manager" output="screen" />
+
+      
+
+    <!-- ArUco reader -->
+    <node name="aruco_reader" pkg="nodelet" type="nodelet" 
+          args="load aruco_recognition/ArUcoReader aruco_recognizer" output="screen">
+        <remap from="image_raw" to="$(arg image_topic)" />
+        <remap from="aruco_out" to="aruco_data"/>
+        <!-- <param name="adaptive_thresh_win_size_min" value="3"/>
+        <param name="adaptive_thresh_win_size_max" value="3"/> -->
+        <param name="publish_empty" value="true"/>
+        <param name="publish_largest_only" value="false"/>
+    </node>
+
+    <!-- Result drawer -->
+    <node name="aruco_drawer" pkg="nodelet" type="nodelet" 
+          args="load object_drawer/ObjectDrawer aruco_recognizer" output="screen">
+        <remap from="image_raw" to="$(arg image_topic)" />
+        <remap from="objects_in" to="aruco_data"/>
+        <remap from="image_out" to="aruco_image"/>
+        <rosparam>
+            line_color: [0, 255, 0]
+        </rosparam>
+    </node>
+
+
+    <!--               -->
+    <!-- Visualization -->
+    <!--               -->
+
+    <!-- <node name="viewer" pkg="rqt_gui" type="rqt_gui"
+          args="- -perspective-file $(find aruco_recognition)/rqt/recognition_v2.perspective" output="screen">
+          <remap from="image_raw" to="$(arg image_topic)" />
+    </node> -->
+    
+
+</launch>

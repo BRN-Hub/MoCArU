@@ -1,0 +1,88 @@
+<launch>
+      <!-- SSP1-->
+      <!-- mjpeg stream to ros image topic -->
+      <node name="mjpeg_client_SSP1" pkg="nodelet" type="nodelet" args="manager" output="screen"  >
+	      <remap from="image" to="SSP1_image"/>
+	      <remap from="image/compressed" to="SSP1_image/compressed"/>
+      </node>
+      <!-- mjpeg stream to compressed image -->
+      <node name="mjepg_client_loader_SSP1" pkg="nodelet" type="nodelet" 
+            args="load mjpeg_client/MjpegClient mjpeg_client_SSP1" output="screen">
+            <rosparam>
+                server: 192.168.0.126
+                target: /axis-cgi/mjpg/video.cgi?camera=1
+                timeout: 5.
+                frame_id: SSP1_camera
+            </rosparam>
+      </node>
+      <!-- compressed image to uncompressed image -->
+      <node name="mjpeg_decoder_loader_SSP1" pkg="nodelet" type="nodelet"
+            args="load mjpeg_client/MjpegDecoder mjpeg_client_SSP1" output="screen" />
+            
+            
+      <!-- SSP3--> 
+      <!-- mjpeg stream to ros image topic -->    
+      <node name="mjpeg_client_SSP3" pkg="nodelet" type="nodelet" args="manager" output="screen" >
+	      <remap from="image" to="SSP3_image"/>
+	      <remap from="image/compressed" to="SSP3_image/compressed"/>
+      </node>
+      <!-- mjpeg stream to compressed image -->
+      <node name="mjepg_client_loader_SSP3" pkg="nodelet" type="nodelet" 
+            args="load mjpeg_client/MjpegClient mjpeg_client_SSP3" output="screen">
+            <rosparam>
+                server: 192.168.0.184
+                target: /axis-cgi/mjpg/video.cgi?camera=1
+                timeout: 5.
+                frame_id: SSP3_camera
+            </rosparam>
+      </node>
+      <!-- -->
+      <!-- compressed image to uncompressed image -->
+      <node name="mjpeg_decoder_loader_SSP3" pkg="nodelet" type="nodelet"
+            args="load mjpeg_client/MjpegDecoder mjpeg_client_SSP3" output="screen" />
+            
+            
+       <!-- SSP4-->   
+       <!-- mjpeg stream to ros image topic -->  
+      <node name="mjpeg_client_SSP4" pkg="nodelet" type="nodelet" args="manager" output="screen" >
+	      <remap from="image" to="SSP4_image"/>
+	      <remap from="image/compressed" to="SSP4_image/compressed"/>
+      </node>
+      <!-- mjpeg stream to compressed image -->
+      <node name="mjepg_client_loader_SSP4" pkg="nodelet" type="nodelet" 
+            args="load mjpeg_client/MjpegClient mjpeg_client_SSP4" output="screen">
+            <rosparam>
+                server: 192.168.0.144
+                target: /axis-cgi/mjpg/video.cgi?camera=1
+                timeout: 5.
+                frame_id: SSP4_camera
+            </rosparam>
+      </node>
+      <!-- -->
+      <!-- compressed image to uncompressed image -->
+      <node name="mjpeg_decoder_loader_SSP4" pkg="nodelet" type="nodelet"
+            args="load mjpeg_client/MjpegDecoder mjpeg_client_SSP4" output="screen" />
+            
+            
+      <!-- SSP5-->     
+      <!-- mjpeg stream to ros image topic -->
+      <node name="mjpeg_client_SSP5" pkg="nodelet" type="nodelet" args="manager" output="screen" >
+	      <remap from="image" to="SSP5_image"/>
+	      <remap from="image/compressed" to="SSP5_image/compressed"/>
+      </node>
+      <!-- mjpeg stream to compressed image -->
+      <node name="mjepg_client_loader_SSP5" pkg="nodelet" type="nodelet" 
+            args="load mjpeg_client/MjpegClient mjpeg_client_SSP5" output="screen">
+            <rosparam>
+                server: 192.168.0.133
+                target: /axis-cgi/mjpg/video.cgi?camera=1
+                timeout: 5.
+                frame_id: SSP5_camera
+            </rosparam>
+      </node>
+      <!-- -->
+      <!-- compressed image to uncompressed image -->
+      <node name="mjpeg_decoder_loader_SSP5" pkg="nodelet" type="nodelet"
+            args="load mjpeg_client/MjpegDecoder mjpeg_client_SSP5" output="screen" />
+     
+</launch>

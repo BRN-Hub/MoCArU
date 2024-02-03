@@ -1,0 +1,144 @@
+<robot name="aruco" xmlns:xacro="http://wiki.ros.org/xacro">
+
+    <!--           -->
+    <!-- arguments -->
+    <!--           -->
+
+    <xacro:arg name="id"            default="0" />
+    <xacro:arg name="marker_prefix" default="aruco_" />
+    <xacro:arg name="corner_prefix" default="corner_" />
+    <xacro:arg name="length"        default="0.225" />
+
+    <!--           -->
+    <!-- constants -->
+    <!--           -->
+
+    <xacro:property name="id"            value="$(arg id)" />
+    <xacro:property name="marker_prefix" value="$(arg marker_prefix)" />
+    <xacro:property name="corner_prefix" value="$(arg corner_prefix)" />
+    <xacro:property name="length"        value="$(arg length)" />
+
+    <xacro:property name="marker_l"  value="${marker_prefix}${id}" />
+    <xacro:property name="marker_m"  value="${marker_prefix}${id + 1}" />
+    <xacro:property name="marker_s0" value="${marker_prefix}${id + 2}" />
+    <xacro:property name="marker_s1" value="${marker_prefix}${id + 3}" />
+    <xacro:property name="marker_s2" value="${marker_prefix}${id + 4}" />
+    <xacro:property name="marker_s3" value="${marker_prefix}${id + 5}" />
+    <xacro:property name="marker_s4" value="${marker_prefix}${id + 6}" />
+    <xacro:property name="marker_s5" value="${marker_prefix}${id + 7}" />
+    <xacro:property name="marker_s6" value="${marker_prefix}${id + 8}" />
+    <xacro:property name="marker_s7" value="${marker_prefix}${id + 9}" />
+
+    <xacro:property name="corner_l"  value="${corner_prefix}${id}" />
+    <xacro:property name="corner_m"  value="${corner_prefix}${id + 1}" />
+    <xacro:property name="corner_s0" value="${corner_prefix}${id + 2}" />
+    <xacro:property name="corner_s1" value="${corner_prefix}${id + 3}" />
+    <xacro:property name="corner_s2" value="${corner_prefix}${id + 4}" />
+    <xacro:property name="corner_s3" value="${corner_prefix}${id + 5}" />
+    <xacro:property name="corner_s4" value="${corner_prefix}${id + 6}" />
+    <xacro:property name="corner_s5" value="${corner_prefix}${id + 7}" />
+    <xacro:property name="corner_s6" value="${corner_prefix}${id + 8}" />
+    <xacro:property name="corner_s7" value="${corner_prefix}${id + 9}" />
+
+    <xacro:property name="length_125" value="${length * 0.125}" />
+    <xacro:property name="length_25"  value="${length * 0.25}" />
+    <xacro:property name="length_375" value="${length * 0.375}" />
+    <xacro:property name="length_50"  value="${length * 0.5}" />
+    <xacro:property name="length_75"  value="${length * 0.75}" />
+
+    <!--                  -->
+    <!-- marker materials -->
+    <!--                  -->
+
+    <xacro:macro name="make_material"
+                 params="name rgba">
+        <material name="${name}">
+            <color rgba="${rgba}" />
+        </material>
+    </xacro:macro>
+
+    <xacro:make_material name="black" rgba="0.2 0.2 0.2 1" />
+    <xacro:make_material name="white" rgba="1.0 1.0 1.0 1" />
+    <xacro:make_material name="red"   rgba="0.8 0.0 0.0 1" />
+    <xacro:make_material name="green" rgba="0.0 0.8 0.0 1" />
+
+    <!--              -->
+    <!-- marker links -->
+    <!--              -->
+
+    <xacro:macro name="make_marker_link"
+                 params="name
+                         z_offset
+                         size
+                         material">
+        <link name="${name}">
+            <visual>
+                <origin xyz="0 0 ${z_offset}" />
+                <geometry>
+                    <box size="${size}" />
+                </geometry>
+                <material name="${material}" />
+            </visual>
+        </link>
+    </xacro:macro>
+
+    <xacro:make_marker_link name="${marker_l}"  z_offset="0"     size="${length}    ${length}    0.001" material="black" />
+    <xacro:make_marker_link name="${marker_m}"  z_offset="0.001" size="${length_50} ${length_50} 0.001" material="red" />
+    <xacro:make_marker_link name="${marker_s0}" z_offset="0.001" size="${length_25} ${length_25} 0.001" material="green" />
+    <xacro:make_marker_link name="${marker_s1}" z_offset="0.001" size="${length_25} ${length_25} 0.001" material="green" />
+    <xacro:make_marker_link name="${marker_s2}" z_offset="0.001" size="${length_25} ${length_25} 0.001" material="green" />
+    <xacro:make_marker_link name="${marker_s3}" z_offset="0.001" size="${length_25} ${length_25} 0.001" material="green" />
+    <xacro:make_marker_link name="${marker_s4}" z_offset="0.001" size="${length_25} ${length_25} 0.001" material="green" />
+    <xacro:make_marker_link name="${marker_s5}" z_offset="0.001" size="${length_25} ${length_25} 0.001" material="green" />
+    <xacro:make_marker_link name="${marker_s6}" z_offset="0.001" size="${length_25} ${length_25} 0.001" material="green" />
+    <xacro:make_marker_link name="${marker_s7}" z_offset="0.001" size="${length_25} ${length_25} 0.001" material="green" />
+
+    <!--                             -->
+    <!-- joints from base to markers -->
+    <!--                             -->
+
+    <xacro:macro name="make_fixed_joint"
+                 params="xyz
+                         parent
+                         child">
+        <joint name="${parent}_to_${child}" type="fixed">
+            <origin xyz="${xyz}" />
+            <parent link="${parent}" />
+            <child link="${child}" />
+        </joint>
+    </xacro:macro>
+
+    <xacro:make_fixed_joint xyz="0              0              0" parent="${marker_l}" child="${marker_m}" />
+    <xacro:make_fixed_joint xyz="${-length_375} ${length_375}  0" parent="${marker_l}" child="${marker_s0}" />
+    <xacro:make_fixed_joint xyz="0              ${length_375}  0" parent="${marker_l}" child="${marker_s1}" />
+    <xacro:make_fixed_joint xyz="${length_375}  ${length_375}  0" parent="${marker_l}" child="${marker_s2}" />
+    <xacro:make_fixed_joint xyz="${-length_375} 0              0" parent="${marker_l}" child="${marker_s3}" />
+    <xacro:make_fixed_joint xyz="${length_375}  0              0" parent="${marker_l}" child="${marker_s4}" />
+    <xacro:make_fixed_joint xyz="${-length_375} ${-length_375} 0" parent="${marker_l}" child="${marker_s5}" />
+    <xacro:make_fixed_joint xyz="0              ${-length_375} 0" parent="${marker_l}" child="${marker_s6}" />
+    <xacro:make_fixed_joint xyz="${length_375}  ${-length_375} 0" parent="${marker_l}" child="${marker_s7}" />
+
+    <!--                   -->
+    <!-- corner of markers -->
+    <!--                   -->
+
+    <xacro:macro name="make_corner"
+                 params="name
+                         xy_offset
+                         marker">
+        <link name="${name}" />
+        <xacro:make_fixed_joint xyz="${xy_offset} ${xy_offset} 0" parent="${marker}" child="${name}" />
+    </xacro:macro>
+
+    <xacro:make_corner name="${corner_l}"  xy_offset="${length_50}"  marker="${marker_l}" />
+    <xacro:make_corner name="${corner_m}"  xy_offset="${length_25}"  marker="${marker_m}" />
+    <xacro:make_corner name="${corner_s0}" xy_offset="${length_125}" marker="${marker_s0}" />
+    <xacro:make_corner name="${corner_s1}" xy_offset="${length_125}" marker="${marker_s1}" />
+    <xacro:make_corner name="${corner_s2}" xy_offset="${length_125}" marker="${marker_s2}" />
+    <xacro:make_corner name="${corner_s3}" xy_offset="${length_125}" marker="${marker_s3}" />
+    <xacro:make_corner name="${corner_s4}" xy_offset="${length_125}" marker="${marker_s4}" />
+    <xacro:make_corner name="${corner_s5}" xy_offset="${length_125}" marker="${marker_s5}" />
+    <xacro:make_corner name="${corner_s6}" xy_offset="${length_125}" marker="${marker_s6}" />
+    <xacro:make_corner name="${corner_s7}" xy_offset="${length_125}" marker="${marker_s7}" />
+
+</robot>
